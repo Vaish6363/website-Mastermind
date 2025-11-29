@@ -1,2300 +1,787 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mastermind</title>
-    
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-    /* Desktop version - positioned on right side */
-.terms-sidebar-container {
-    position: fixed;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 990;
-    width: 200px;
-    height: 500px;
-}
-
-.terms-box {
-    width: 100%;
-    height: 100%;
-    padding: 15px;
-    background-color: #151515;
-    color: #f4f2f2;
-    border: 2px solid #aaa;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    text-align: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-}
-
-.terms-box h3 {
-    font-size: 14px;
-    color: #dc3545;
-    margin-bottom: 5px;
-}
-
-.terms-box p {
-    font-size: 10px;
-    line-height: 1.4;
-    color: #ccc;
-    flex-grow: 1;
-    overflow-y: auto;
-    margin: 5px 0;
-}
-
-.terms-box .read-more-link {
-    font-size: 10px;
-    color: #dc3545;
-    text-decoration: none;
-    font-weight: bold;
-    margin-top: 5px;
-    display: inline-block;
-}
-
-.terms-box .read-more-link:hover {
-    color: #ff4545;
-    text-decoration: underline;
-}
-
-.close-terms-btn {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background: transparent;
-    color: #dc3545;
-    border: none;
-    font-size: 20px;
-    font-weight: 300;
-    cursor: pointer;
-    line-height: 1;
-    padding: 0;
-    margin: 0;
-    z-index: 10;
-    transition: color 0.3s;
-}
-
-.close-terms-btn:hover {
-    color: #f4f2f2;
-}
-
-/* Hide container when closed */
-.terms-sidebar-container.hidden {
-    display: none;
-}
-        .contact-toggle {
-    display: none;
-    background: transparent;
-    border: 2px solid #dc3545;
-    color: #dc3545;
-    padding: 8px 15px;
-    cursor: pointer;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.3s ease;
-}
-
-.contact-toggle:hover {
-    background: #dc3545;
-    color: #fff;
-}
-        /* Styling for the section containing the grid */
-
-
-/* Media query for smaller screens */
-@media (max-width: 768px) {
-    /* Header adjustments */
-    header {
-        padding: 15px 3%;
-        flex-wrap: wrap;
-    }
-
-    /* Logo adjustments */
-    .logo img {
-        height: 60px;
-    }
-
-    .logo-text {
-        font-size: 16px;
-    }
-
-    .logo-phone {
-        font-size: 14px;
-        gap: 5px;
-    }
-
-    .phone-icon {
-        width: 24px !important;
-        height: 24px !important;
-    }
-
-    /* Show contact toggle button */
-    .contact-toggle {
-        display: block;
-        margin-left: auto;
-        margin-right: 10px;
-    }
-
-    /* Hide contact icons by default on mobile */
-    .contact-icons {
-        display: none;
-        position: fixed;
-        top: 70px;
-        right: 0;
-        left: 0;
-        background: rgba(10, 10, 10, 0.98);
-        padding: 1px;
-        justify-content: center;
-        gap: 20px;
-        border-bottom: 1px solid rgba(220, 53, 69, 0.3);
-        z-index: 999;
-    }
-
-    .contact-icons.active {
-        display: flex;
-    }
-
-    /* Navigation wrapper adjustments */
-    .nav-wrapper {
-        flex-direction: row;
-        width: 100%;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 10px;
-        margin-top: 10px;
-    }
-
-    .menu-toggle {
-        display: flex;
-        order: 2;
-    }
-
-    nav {
-        position: fixed;
-        top: 70px;
-        left: -100%;
-        width: 100%;
-        background: rgba(10, 10, 10, 0.98);
-        padding: 40px 5%;
-        transition: left 0.3s ease;
-        z-index: 998;
-    }
-
-    nav.active {
-        left: 0;
-    }
-
-    nav ul {
-        flex-direction: column;
-        gap: 20px;
-    }
-
-    /* Hero Section Mobile */
-    .hero {
-        flex-direction: column;
-        height: auto;
-        min-height: 100vh;
-        padding: 80px 20px 40px;
-        gap: 30px;
-    }
-
-    .main-logo {
-        height: 200px;
-        margin: 20px auto 10px;
-    }
-
-    .hero h1 {
-        font-size: 36px;
-    }
-
-    .hero .subtitle {
-        font-size: 18px;
-    }
-
-    .hero p {
-        font-size: 16px;
-    }
-
-    .hero-content {
-        max-width: 100%;
-        padding: 20px 0;
-    }
-
-    
-
-    .btn {
-        padding: 12px 30px;
-        font-size: 12px;
-        display: block;
-        width: 100%;
-        text-align: center;
-        margin-bottom: 10px;
-    }
-
-    .btn-outline {
-        margin-left: 0;
-        margin-top: 10px;
-    }
-
-    /* Terms Box Mobile */
-    .terms-sidebar-container {
-        /* Move to bottom-right corner on mobile */
-        right: 10px;
-        top: auto;
-        bottom: 20px;
-        transform: none;
-        width: 160px;
-        height: 350px;
-        z-index: 990;
-    }
-
-    .terms-box {
-        padding: 12px;
-    }
-
-    .terms-box h3 {
-        font-size: 12px;
-        margin-bottom: 5px;
-    }
-
-    .terms-box p {
-        font-size: 9px;
-        line-height: 1.3;
-    }
-
-    .terms-box .read-more-link {
-        font-size: 9px;
-        margin-top: 3px;
-    }
-
-    .close-terms-btn {
-        font-size: 18px;
-        top: 3px;
-        right: 3px;
-    }
-
-
-
-    /* Gallery Mobile */
-    .gallery-item {
-        width: 200px;
-        height: 200px;
-        margin-right: 15px;
-    }
-
-    .image-title-container {
-        font-size: 0.9rem;
-        padding: 8px 10px;
-    }
-
-    /* About Section Mobile */
-    .about-content {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
-
-    .about-image::after {
-        top: 10px;
-        right: 10px;
-    }
-
-    .stats {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-
-    /* Services Gallery Mobile */
-    .services-gallery {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-        gap: 15px;
-    }
-
-    .service-art-card:first-child,
-    .services-gallery > div:nth-child(2),
-    .services-gallery > div:nth-child(3),
-    .services-gallery > div:nth-child(4),
-    .services-gallery > div:nth-child(5),
-    .services-gallery > div:nth-child(6),
-    .services-gallery > div:nth-child(7) {
-        grid-column: auto;
-        grid-row: auto;
-    }
-
-    .service-art-card:first-child,
-    .services-gallery > div:nth-child(5) {
-        grid-row: span 1;
-    }
-
-    .service-art-card {
-        height: 250px;
-    }
-
-    /* Contact Form Mobile */
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-
-    .contact-info {
-        grid-template-columns: 1fr;
-    }
-
-    /* Section Padding Mobile */
-    section {
-        padding: 60px 5%;
-    }
-
-    .section-title h2 {
-        font-size: 32px;
-    }
-
-    .section-title p {
-        font-size: 14px;
-    }
-
-    /* Social Links Mobile */
-    .social-icon {
-        width: 24px;
-        height: 24px;
-    }
-}
-
-/* Extra Small Devices */
-@media (max-width: 480px) {
-    .logo img {
-        height: 50px;
-    }
-
-    .logo-text {
-        font-size: 14px;
-    }
-
-    .logo-phone {
-        font-size: 12px;
-    }
-
-    .phone-icon {
-        width: 20px ;
-        height: 20px ;
-    }
-
-    .hero h1 {
-        font-size: 28px;
-    }
-
-    .main-logo {
-        height: 150px;
-    }
-
-    
-
-
-    .terms-sidebar-container {
-        width: 120px;
-        height: 350px;
-        right: 5px;
-    }
-
-    .gallery-item {
-        width: 150px;
-        height: 150px;
-    }
-
-    .section-title h2 {
-        font-size: 24px;
-    }
-
-    .btn {
-        padding: 10px 20px;
-        font-size: 11px;
-    }
-}
-
-/* Optional adjustment for existing logo-text */
-/* This ensures the name remains visible and doesn't conflict with the new group */
-.logo-text {
-    font-size: 24px;
-    font-weight: 700;
-    color: #e21227;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
-
-/* ADD THIS NEW RULE */
-.logo-text-group {
-    display: flex;
-    flex-direction: column; /* This is the key that forces the Mastermind Designer and the number to stack */
-    justify-content: center;
-}
-/* END OF NEW RULE */
-        /* --- Social Icons Styling and Positioning --- */
-
-/* Style the container for the icons */
-/* --- Updated Social Icons Styling --- */
-.contact-icons {
-    display: flex;
-    gap: 15px; /* Space between the icons */
-    /* Icons are now positioned by the .nav-wrapper */
-}
-
-/* Optional: Make sure the list items don't have unnecessary margin */
-nav ul {
-    display: flex;
-    list-style: none;
-    gap: 40px;
-    margin: 0; /* Ensures no unnecessary top/bottom margin */
-}
-/* --- Wrapper for Vertical Stacking on the Right --- */
-.nav-wrapper {
-    display: flex;
-    flex-direction: column; /* STACKS NAV AND ICONS VERTICALLY */
-    align-items: flex-end; /* ALIGNS BOTH TO THE RIGHT */
-    margin-left: auto; /* Pushes the wrapper to the far right */
-    gap: 40px; /* Small gap between the navigation and the icons */
-}
-
-/* Style the individual icon images */
-.social-icon {
-    width: 30px; /* Standard icon size (adjust as needed) */
-    height: 30px;
-    transition: opacity 0.3s;
-}
-
-.contact-icons a:hover .social-icon {
-    opacity: 0.7; /* Slight fade effect on hover */
-}
-@media (min-width: 769px) {
-    header {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: nowrap;
-    }
-
-    .nav-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        margin-left: auto;
-        gap: 40px;
-    }
-
-    .contact-icons {
-        display: flex;
-        gap: 15px;
-        position: static;
-    }
-
-    .contact-toggle {
-        display: none;
-    }
-}
-/* Make sure they look good on small screens */
-@media (max-width: 768px) {
-    .contact-icons {
-        top: 10px;
-        right: 15px;
-        gap: 10px;
-    }
-    .social-icon {
-        width: 24px;
-        height: 24px;
-    }
-}
-        /* --- New CSS for Logo Sizing --- */
-.main-logo {
-    /* Set a reasonable height or width for the logo */
-    height: 300px; 
-    width: auto; 
-    display: block; 
-    
-    /* UPDATED MARGIN: Increased the first value (Top Margin) to 50px */
-    margin: 0px auto 10px auto; 
-    /* You can adjust 50px to any value (e.g., 100px) to shift it down more */
-    
-    /* Add any transition effects or shadows if desired */
-    transition: transform 0.3s ease;
-}
-/* Optional: Make the logo responsive */
-@media (max-width: 600px) {
-    .main-logo {
-        height: 500px; /* Smaller size on mobile */
-    }
-}
-        
-
-/* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1000; /* Sit on top of everything */
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
-    padding-top: 50px;
-}
-
-/* Modal Content/Box */
-.modal-content {
-    background-color: #222;
-    margin: 5% auto; /* 5% from the top and centered */
-    padding: 30px;
-    border: 1px solid #888;
-    width: 90%; /* Wide content box */
-    max-width: 1000px;
-    position: relative;
-    color: #fff;
-    display: grid;
-    grid-template-columns: 2fr 1fr; /* Split layout: Main image on left, info/samples on right */
-    gap: 30px;
-}
-
-/* Close button */
-.close-btn {
-    color: #fff;
-    position: absolute;
-    top: 10px;
-    right: 25px;
-    font-size: 35px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-.close-btn:hover,
-.close-btn:focus {
-    color: #dc3545;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-/* Main Image Area */
-.modal-main-image {
-    max-height: 70vh; /* Max height for the main image area */
-    overflow: hidden;
-}
-#modal-main-img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* Info and Sample Gallery */
-.modal-info h3 {
-    color: #dc3545;
-    margin-top: 0;
-}
-
-.modal-sample-gallery h4 {
-    margin-top: 20px;
-    border-bottom: 1px solid #444;
-    padding-bottom: 5px;
-}
-
-.thumbnail-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.thumbnail-grid img.thumbnail {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    cursor: pointer;
-    opacity: 0.7;
-    transition: opacity 0.3s, border 0.3s;
-    border: 2px solid transparent;
-}
-
-.thumbnail-grid img.thumbnail:hover {
-    opacity: 1;
-    border-color: #dc3545;
-}
-
-/* Responsive adjustment for small screens */
-@media (max-width: 768px) {
-    .hero {
-        flex-direction: column;
-        height: auto;
-        min-height: 100vh;
-        padding: 100px 20px 40px; /* Increased top padding */
-        gap: 30px;
-        justify-content: flex-start; /* Changed from center */
-    }
-
-    /* Hide flash grid on mobile to prevent overlap */
-    .hero-flash-wrapper {
-        display: none;
-    }
-
-    .hero-content {
-        max-width: 100%;
-        padding: 20px 10px;
-        width: 100%;
-        position: relative;
-        z-index: 10; /* Ensure it's above background */
-    }
-
-    .main-logo {
-        height: 250px !important; /* Force logo size on mobile */
-        width: auto !important;
-        display: block !important;
-        margin: 30px auto 20px !important;
-        max-width: 90%;
-        object-fit: contain;
-    }
-
-    .hero h1 {
-        font-size: 36px;
-        margin-bottom: 15px;
-    }
-
-    .hero .subtitle {
-        font-size: 20px;
-        margin-bottom: 20px;
-    }
-
-    .hero p {
-        font-size: 16px;
-        margin-bottom: 30px;
-        line-height: 1.6;
-    }
-
-    .btn {
-        padding: 12px 30px;
-        font-size: 12px;
-        display: inline-block;
-        width: auto;
-        min-width: 150px;
-        text-align: center;
-        margin: 5px;
-    }
-
-    .btn-outline {
-        margin-left: 0;
-        margin-top: 5px;
-    }
-
-    .scroll-indicator {
-        bottom: 20px;
-    }
-}
-
-/* Extra small devices */
-@media (max-width: 480px) {
-    .hero {
-        padding: 150px 15px 100px;
-    }
-
-    .main-logo {
-        height: 400px !important;
-        margin: 20px auto 15px !important;
-    }
-
-    .hero h1 {
-        font-size: 28px;
-    }
-
-    .hero .subtitle {
-        font-size: 18px;
-    }
-
-    .hero p {
-        font-size: 14px;
-    }
-
-    .btn {
-        padding: 10px 20px;
-        font-size: 11px;
-        min-width: 130px;
-        display: block;
-        width: 90%;
-        margin: 10px auto;
-    }
-}
-
-/* Very small devices */
-@media (max-width: 360px) {
-    .main-logo {
-        height: 150px !important;
-    }
-
-    .hero h1 {
-        font-size: 24px;
-    }
-
-    .hero .subtitle {
-        font-size: 16px;
-    }
-}
-
-        body {
-  margin: 0;
-  padding: 0;
-  background: url('images/mastermind-bg.jpg') no-repeat center center fixed;
-  background-size: cover;
-  font-family: Arial, sans-serif; /* keep your preferred font */
-}
-
-
-        /* Header */
-        header {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            padding: 1px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(220, 53, 69, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        header.scrolled {
-            padding: 15px 5%;
-            background: rgba(10, 10, 10, 0.98);
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo img {
-            height: 55px;
-            width: auto;
-        }
-
-        .logo-text {
-            font-size: 24px;
-            font-weight: 700;
-            color: #eb1111;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 40px;
-        }
-
-        nav a {
-            color: #f7f3f3;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            transition: color 0.3s ease;
-        }
-
-        nav a:hover {
-            color: #f9f6f7;
-        }
-
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            gap: 5px;
-        }
-
-        .menu-toggle span {
-            width: 25px;
-            height: 2px;
-            background: #f6f2f2;
-            transition: 0.3s;
-        }
-
-        /* Hero Section */
-        .hero {
-    position: relative;
-    height: 2%;
-    /* CHANGE 1: Use Flexbox to align content horizontally */
-    display: flex;
-    justify-content: center; /* Centers the grid and text block together */
-    align-items: center;
-    /* Removed text-align: center as it's handled by flex/hero-content */
-    overflow: hidden;
-    color: #fff;
-    background: url('images/mastermind-bg.jpg') no-repeat center center/cover;
-    gap: 5%; /* Adds space between the grid on the left and the text on the right */
-}
-
-        .hero::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.55); /* 0.55 = balanced dim, try 0.4 for more visibility */
-            z-index: 1;
-        }
-
-        .hero * {
-            position: relative;
-            z-index: 2;
-        }
-
-
-        .hero-content {
-    /* Reduced max-width since it shares space now */
-    max-width: 500px; 
-    padding: 20px;
-    animation: fadeInUp 1s ease;
-    text-align: center; /* Keep content centered inside its own box */
-}
-
-        .hero h1 {
-    font-family: 'Cinzel', serif;
-    font-size: 90px;
-    font-weight: 700;
-    margin-bottom: 20px;
-    color: #fff;
-    text-transform: none;
-    letter-spacing: 2px;
-    text-shadow: 0 0 20px rgba(239, 234, 235, 0.3);
-}
-.hero-content {
-    /* Reduced max-width since it shares space now */
-    max-width: 500px; 
-    padding: 20px;
-    animation: fadeInUp 1s ease;
-    text-align: center; /* Keep content centered inside its own box */
-}
-
-
-        .hero .subtitle {
-            font-size: 24px;
-            color: #fffbfb;
-            margin-bottom: 30px;
-            font-weight: 300;
-            letter-spacing: 2px;
-        }
-
-        .hero p {
-            font-size: 18px;
-            margin-bottom: 40px;
-            line-height: 1.8;
-            color: #ccc;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 15px 40px;
-            background: #dc3545;
-            color: #fff;
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 600;
-            font-size: 14px;
-            border: 2px solid #dc3545;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background: transparent;
-            color: #eee8e9;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #fff;
-            color: #fff;
-            margin-left: 20px;
-        }
-
-        .btn-outline:hover {
-            background: #fff;
-            color: #0a0a0a;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: bounce 2s infinite;
-        }
-
-        .scroll-indicator::after {
-            content: '↓';
-            font-size: 24px;
-            color: #f9f4f5;
-        }
-
-        /* Section Styling */
-        section {
-            padding: 100px 5%;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-title h2 {
-            font-size: 48px;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-        }
-
-        .section-title .line {
-            width: 80px;
-            height: 3px;
-            background: #f3efef;
-            margin: 0 auto 20px;
-        }
-
-        .section-title p {
-            color: #999;
-            font-size: 16px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Gallery Filters */
-        .filter-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 50px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 10px 30px;
-            background: transparent;
-            border: 2px solid #333;
-            color: #e0e0e0;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 1px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .filter-btn:hover,
-        .filter-btn.active {
-            background: #fffbfc;
-            border-color: #f6f3f3;
-            color: #fff;
-        }
-
-        /* --- Gallery Section CSS FIX for Spacing and Seamless Loop --- */
-        /* --- New Animation for Right-to-Left Scroll --- */
-
-.gallery-marquee.reverse-scroll {
-    /* Apply the reverse animation */
-    animation: scroll-right 40s linear infinite;
-    /* To start from the right, we translate it by the required amount */
-    transform: translateX(calc(-50% - var(--image-spacing) / 2));
-}
-
-@keyframes scroll-right {
-    from {
-        /* Start position (at the end of the duplicated content) */
-        transform: translateX(calc(-50% - var(--image-spacing) / 2));
-    }
-    to {
-        /* Move all the way to the start (0) */
-        transform: translateX(0);
-    }
-}
-
-#gallery {
-    padding: 100px 0;
-    overflow: hidden; 
-}
-
-/* Define the horizontal space we want between each image */
-:root {
-    --image-spacing: 30px; 
-}
-
-.gallery-marquee {
-    display: flex;
-    width: 200%;
-    animation: scroll-left 40s linear infinite;
-    /*cursor: grab;*/ /* New cursor style to suggest interaction */
-}
-
-/* Stop scrolling on hover */
-.gallery-marquee:hover {
-    animation-play-state: paused;
-}
-
-.gallery-row {
-    display: flex;
-    flex-shrink: 0;
-    /* Use margin to separate the rows themselves (this is the space between the last image of the first set and the first of the duplicate set) */
-    margin-right: var(--image-spacing); 
-    padding: 20px 0; 
-}
-
-.gallery-item {
-    /* Apply the spacing using margin-right to all items */
-    margin-right: var(--image-spacing); 
-    /* Width of each image box - keep this consistent */
-    width: 200px; 
-    height: 200px; 
-    flex-shrink: 0; 
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    background: #1a1a1a;
-    border: 25px solid #080808;
-}
-.image-title-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    padding: 10px 15px;
-    background: rgba(0, 0, 0, 0.6);
-    color: white; 
-    /* Increase this value significantly */
-    z-index: 50; /* Changed from 5 to 50 for guaranteed visibility */
-    font-size: 1.1rem;
-    font-weight: bold;
-    text-align: center;
-    pointer-events: none;
-}
-/* Ensure the overlay text below the image is still functional */
-.gallery-overlay h3, .gallery-overlay p {
-    /* Inherits from .gallery-overlay, but ensure color is visible */
-    color: #fff;
-    z-index: 10;
-}
-
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-.gallery-item:hover img {
-    transform: scale(1.1);
-}
-
-/* The core animation */
-@keyframes scroll-left {
-    from {
-        /* Start position */
-        transform: translateX(0);
-    }
-    to {
-        /* Move exactly half the container width. 
-           (100% of the original content + the gap at the end of the first row) 
-           This is the most critical part of the seamless loop.
-        */
-        transform: translateX(calc(-50% - var(--image-spacing) / 2)); 
-    }
-}
-/* Optional: Keep the overlay effect on hover */
-.gallery-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(7, 7, 7, 0.9);
-    /* ... other properties ... */
-    opacity: 0;
-    /* Ensure this is lower than the title's z-index (50) */
-    z-index: 10; 
-    transition: opacity 0.3s ease;
-}
-.gallery-item:hover .gallery-overlay {
-    opacity: 1;
-}
-.gallery-overlay h3, .gallery-overlay p {
-    color: #fff;
-    z-index: 10;
-}
-
-/* The core animation */
-@keyframes scroll-left {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        /* Moves the entire 200% width container back by 100% 
-           to seamlessly loop the duplicated content. */
-        transform: translateX(-50%); 
-    }
-}
-
-        /* About Section */
-        .about {
-            background: #0f0f0f;
-        }
-
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .about-image {
-            position: relative;
-        }
-
-        .about-image img {
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-        }
-
-        .about-image::after {
-            content: '';
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 100%;
-            height: 100%;
-            border: 3px solid #dc3545;
-            z-index: -1;
-        }
-
-        .about-text h3 {
-            font-size: 36px;
-            margin-bottom: 20px;
-            color: #fff;
-        }
-
-        .about-text p {
-            line-height: 1.8;
-            margin-bottom: 20px;
-            color: #aaa;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 20px;
-            background: #1a1a1a;
-        }
-
-        .stat-item h4 {
-            font-size: 36px;
-            color: #dc3545;
-            margin-bottom: 10px;
-        }
-
-        .stat-item p {
-            color: #999;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* --- Services Section CSS Modification for Perfect Image Fit --- */
-
-/* --- Services Section CSS Modification for Dual Tall Images --- */
-
-.services-gallery {
-    display: grid;
-    /* Defines 3 columns of equal width */
-    grid-template-columns: repeat(3, 1fr); 
-    /* Defines 3 rows. We need 3 rows now to fit all 7 images with 2 tall ones. 
-       The height of the tall images will fill two of these rows. */
-    grid-template-rows: repeat(3, minmax(180px, 1fr)); 
-    gap: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* Base card styling (keep border and fit) */
-.service-art-card {
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    background: #000;
-    border: 15px solid #fff;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-}
-
-.service-art-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-/* --- Explicit Placement for 7 Images --- */
-
-/* 1. Tall Image (Woman in B&W) - Column 1, Rows 1 & 2 */
-.service-art-card:first-child {
-    grid-row: 1 / span 2; 
-    grid-column: 1 / 2; 
-}
-
-/* 2. Top-Middle Image (Chakra) - Column 2, Row 1 */
-.services-gallery > div:nth-child(2) {
-    grid-column: 2 / 3; 
-    grid-row: 1 / 2; 
-}
-
-/* 3. Top-Right Image (Floral Face) - Column 3, Row 1 */
-.services-gallery > div:nth-child(3) {
-    grid-column: 3 / 4; 
-    grid-row: 1 / 2; 
-}
-
-/* 4. Middle-Middle Image (Abstract) - Column 2, Row 2 (under Chakra) */
-.services-gallery > div:nth-child(4) {
-    grid-column: 2 / 3; 
-    grid-row: 2 / 3; 
-}
-
-/* 5. Tall Image (Feather) - Column 3, Rows 2 & 3 (under Floral Face) */
-.services-gallery > div:nth-child(5) {
-    grid-column: 3 / 4; 
-    grid-row: 2 / span 2; 
-}
-
-/* 6. Bottom-Left Image (Sunset Boat) - Column 1, Row 3 (under Tall Image 1) */
-.services-gallery > div:nth-child(6) {
-    grid-column: 1 / 2; 
-    grid-row: 3 / 4; 
-}
-
-/* 7. Bottom-Middle Image (Woman Close-up) - Column 2, Row 3 (under Abstract) */
-.services-gallery > div:nth-child(7) {
-    grid-column: 2 / 3; 
-    grid-row: 3 / 4; 
-}
-
-@media (max-width: 768px) {
-    /* ... other responsive styles ... */
-    
-    /* Reset explicit column/row placements for all items on mobile */
-    .service-art-card:first-child,
-    .services-gallery > div:nth-child(2),
-    .services-gallery > div:nth-child(3),
-    .services-gallery > div:nth-child(4),
-    .services-gallery > div:nth-child(5),
-    .services-gallery > div:nth-child(6),
-    .services-gallery > div:nth-child(7) {
-        grid-column: auto;
-        grid-row: auto;
-    }
-    
-    /* Ensure tall images default back to 1 row on mobile */
-    .service-art-card:first-child,
-    .services-gallery > div:nth-child(5) {
-        grid-row: span 1; 
-    }
-    
-    .services-gallery {
-        /* Set to 2 columns and let items flow naturally */
-        grid-template-columns: repeat(2, 1fr); 
-        grid-template-rows: auto; 
-    }
-}
-        /* Contact Section */
-        .contact {
-            background: #0f0f0f;
-        }
-
-        .contact-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .contact-form {
-            display: grid;
-            gap: 20px;
-        }
-
-        .form-group {
-            display: grid;
-            gap: 20px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 15px 20px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            color: #e0e0e0;
-            font-size: 14px;
-            transition: border-color 0.3s ease;
-        }
-
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #dc3545;
-        }
-
-        textarea {
-            resize: vertical;
-            min-height: 150px;
-        }
-
-        .whatsapp-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 15px 40px;
-            background: #25D366;
-            color: #fff;
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 600;
-            font-size: 14px;
-            border: 2px solid #25D366;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .whatsapp-btn:hover {
-            background: transparent;
-            color: #25D366;
-        }
-
-        .whatsapp-icon {
-            width: 24px;
-            height: 24px;
-        }
-
-        .contact-info {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            margin-top: 60px;
-            text-align: center;
-        }
-
-        .contact-item {
-            padding: 20px;
-        }
-
-        .contact-item i {
-            font-size: 32px;
-            color: #dc3545;
-            margin-bottom: 15px;
-        }
-
-        .contact-item h4 {
-            font-size: 18px;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-
-        .contact-item p {
-            color: #999;
-            font-size: 14px;
-        }
-
-        /* Footer */
-        footer {
-            background: #000;
-            padding: 60px 5% 30px;
-            text-align: center;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .social-links a {
-            width: 50px;
-            height: 50px;
-            border: 2px solid #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #e0e0e0;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-size: 20px;
-        }
-
-        .social-links a:hover {
-            border-color: #dc3545;
-            color: #dc3545;
-            transform: translateY(-5px);
-        }
-
-        .copyright {
-            color: #666;
-            font-size: 14px;
-            margin-top: 20px;
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-10px); }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: flex;
-            }
-
-            nav {
-                position: fixed;
-                top: 70px;
-                left: -100%;
-                width: 100%;
-                background: rgba(10, 10, 10, 0.98);
-                padding: 40px 5%;
-                transition: left 0.3s ease;
-            }
-
-            nav.active {
-                left: 0;
-            }
-
-            nav ul {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .hero h1 {
-                font-size: 42px;
-            }
-
-            .hero .subtitle {
-                font-size: 18px;
-            }
-
-            .btn-outline {
-                margin-left: 0;
-                margin-top: 10px;
-            }
-
-            .about-content,
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-
-            .stats,
-            .contact-info {
-                grid-template-columns: 1fr;
-            }
-
-            .section-title h2 {
-                font-size: 36px;
-            }
-        }
-        /* --- Styling for the Form and Button --- */
-
-/* Basic styling for the form elements within the terms-box */
-.terms-box form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px; /* Space between inputs */
-}
-
-.terms-box input[type="text"],
-.terms-box textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #555;
-    background-color: #222;
-    color: #f4f2f2;
-    border-radius: 4px;
-    font-size: 14px;
-    resize: none; /* Prevent manual resizing of textarea */
-}
-
-/* --- Animated Button Style --- */
-
-.submit-btn {
-    /* Base Style */
-    padding: 12px 20px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 25px; /* Pill shape */
-    background-color: #007bff; /* Vibrant Blue background */
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    
-    /* Animation setup */
-    transition: all 0.3s ease; /* Transition for background, shadow, and transform */
-    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4); /* Subtle initial shadow */
-}
-
-.submit-btn:hover {
-    /* Hover Animation */
-    background-color: #0056b3; /* Darker blue on hover */
-    transform: scale(1.05); /* Slightly increases size */
-    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6), 
-                0 0 5px rgba(255, 255, 255, 0.8); /* Stronger shadow and a subtle glow */
-}
-
-.submit-btn:active {
-    /* Click/Active State (for a nice press-down feel) */
-    transform: scale(0.98);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-}
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mastermind Designer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <!-- Header -->
-    <header id="header">
-    <div class="logo">
-        <img src="images/13.jpg" alt="Mastermind Designer Logo">
-        <div class="logo-text-group">
-            <span class="logo-text" style="padding-top: 40px;">Mastermind Designer</span>
-                <a href="tel:8088249999" class="logo-phone" style="font-size: 25px; color: #fff; text-decoration: none;">
+<body class="bg-black text-white font-sans">
 
-                <img src="images/c.png" alt="Phone" class="phone-icon">
-                8088249999
-            </a>
-        </div>
+<!-- Header -->
+<header class="fixed w-full top-0 z-50 bg-black/95 backdrop-blur border-b border-red-500/20 px-4 py-2">
+  <div class="flex justify-between items-center">
+    <!-- Logo Section -->
+    <div class="flex items-center gap-3">
+      <img src="images/13.jpg" alt="Mastermind Logo" class="h-10 md:h-12"/>
+      <div class="flex flex-col leading-tight">
+        <span class="text-base md:text-xl font-bold uppercase text-red-600 tracking-wider">Mastermind Designer</span>
+        <a href="tel:8088249999" class="flex items-center gap-1 text-white text-sm md:text-base">
+          <img src="images/c.png" class="w-5 h-5 md:w-6 md:h-6" alt="Phone Icon"/>8088249999
+        </a>
+      </div>
     </div>
-    
-    <div class="nav-wrapper"> 
-        
-        
-        <div class="menu-toggle" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        
-        <nav id="nav">
-            <ul>
-                <li><a href="#home" onclick="toggleMenu()">Home</a></li>
-                <li><a href="#gallery" onclick="toggleMenu()">Gallery</a></li>
-                <li><a href="#about" onclick="toggleMenu()">About</a></li>
-                <li><a href="#services" onclick="toggleMenu()">Services</a></li>
-                <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
-            </ul>
-        </nav>
-        
-        <div class="contact-icons">
-            <a href="https://wa.me/918088249999" target="_blank" aria-label="WhatsApp">
-                <img src="images\1.png" alt="WhatsApp" class="social-icon">
-            </a>
-            <a href="https://www.instagram.com/mastermind_designer" target="_blank" aria-label="Instagram">
-                <img src="images\12.png" alt="Instagram" class="social-icon">
-            </a>
-            <a href="mailto:info@masterminddesigner.com" aria-label="Email">
-                <img src="images\email.png" alt="Email" class="social-icon">
-            </a>
-            <a href="YOUR_YOUTUBE_CHANNEL_LINK" target="_blank" aria-label="YouTube">
-                <img src="images\y.png" alt="YouTube" class="social-icon">
-            </a>
-            <a href="YOUR_FACEBOOK_PAGE_LINK" target="_blank" aria-label="Facebook">
-                <img src="images\f.png" alt="Facebook" class="social-icon">
-            </a>
-        </div>
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden lg:block">
+      <ul class="flex gap-7 uppercase text-sm font-medium">
+        <li><a href="#home" class="hover:text-red-400 transition">Home</a></li>
+        <li><a href="#gallery" class="hover:text-red-400 transition">Gallery</a></li>
+        <li><a href="#about" class="hover:text-red-400 transition">About</a></li>
+        <li><a href="#services" class="hover:text-red-400 transition">Services</a></li>
+        <li><a href="#contact" class="hover:text-red-400 transition">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- Desktop Social Icons -->
+    <div class="hidden lg:flex gap-3 ml-5">
+      <a href="https://wa.me/918088249999" target="_blank" aria-label="WhatsApp"><img src="images/1.png" class="w-7 h-7 hover:opacity-70 transition" alt="WhatsApp"/></a>
+      <a href="https://www.instagram.com/masterminddesigner" target="_blank" aria-label="Instagram"><img src="images/12.png" class="w-7 h-7 hover:opacity-70 transition" alt="Instagram"/></a>
+      <a href="mailto:info@masterminddesigner.com" aria-label="Email"><img src="images/email.png" class="w-7 h-7 hover:opacity-70 transition" alt="Email"/></a>
+      <a href="YOURYOUTUBECHANNELLINK" target="_blank" aria-label="YouTube"><img src="images\y.png" class="w-7 h-7 hover:opacity-70 transition" alt="YouTube"/></a>
+      <a href="YOURFACEBOOKPAGELINK" target="_blank" aria-label="Facebook"><img src="images\f.png" class="w-7 h-7 hover:opacity-70 transition" alt="Facebook"/></a>
     </div>
+
+    <!-- Mobile Hamburger Button -->
+    <button id="menu-toggle" class="lg:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu">
+      <span class="block w-6 h-0.5 bg-white transition-all"></span>
+      <span class="block w-6 h-0.5 bg-white transition-all"></span>
+      <span class="block w-6 h-0.5 bg-white transition-all"></span>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+<nav id="mobile-menu" class="lg:hidden hidden bg-black absolute top-full left-0 w-full border-b border-red-500/20 py-4">
+  <ul class="flex flex-col gap-4 px-4">
+    <li><a href="#home" class="block py-2 hover:text-red-400 transition uppercase text-sm font-medium" onclick="toggleMobileMenu()">Home</a></li>
+    <li><a href="#gallery" class="block py-2 hover:text-red-400 transition uppercase text-sm font-medium" onclick="toggleMobileMenu()">Gallery</a></li>
+    <li><a href="#about" class="block py-2 hover:text-red-400 transition uppercase text-sm font-medium" onclick="toggleMobileMenu()">About</a></li>
+    <li><a href="#services" class="block py-2 hover:text-red-400 transition uppercase text-sm font-medium" onclick="toggleMobileMenu()">Services</a></li>
+    <li><a href="#contact" class="block py-2 hover:text-red-400 transition uppercase text-sm font-medium" onclick="toggleMobileMenu()">Contact</a></li>
+  </ul>
+  <!-- Mobile Social Icons -->
+  <div class="flex gap-4 px-4 mt-4 pt-4 border-t border-gray-700">
+    <a href="https://wa.me/918088249999" target="_blank" aria-label="WhatsApp"><img src="images/1.png" class="w-6 h-6" alt="WhatsApp"/></a>
+    <a href="https://www.instagram.com/masterminddesigner" target="_blank" aria-label="Instagram"><img src="images/12.png" class="w-6 h-6" alt="Instagram"/></a>
+    <a href="mailto:info@masterminddesigner.com" aria-label="Email"><img src="images/email.png" class="w-6 h-6" alt="Email"/></a>
+    <a href="YOURYOUTUBECHANNELLINK" target="_blank" aria-label="YouTube"><img src="images\y.png" class="w-6 h-6" alt="YouTube"/></a>
+    <a href="YOURFACEBOOKPAGELINK" target="_blank" aria-label="Facebook"><img src="images\f.png" class="w-6 h-6" alt="Facebook"/></a>
+  </div>
+</nav>
+
 </header>
-    <!--Terms -->
-    <div class="terms-sidebar-container">
-    <div class="terms-box" id="termsBox">
-        
-        <button class="close-terms-btn" onclick="hideTermsBox()">
-            &times;
-        </button>
-        <h3>Terms & Conditions</h3>
-        <p>This work will be accepted with the following terms and conditions.</p>
-<p>1. The work you have given will be completed within 10 to --------- days.</p>
-<p>2. 65% of the order package you have given shall be paid in advance.</p>
-<p>3. The remaining 35% of the amount, 30%, shall be divided into two installments and one installment shall be paid when your work is 75% complete.</p>
-<p>4. The remaining 15% shall be paid when your work is at the completion stage in our workshop.</p>
-<p>5. The remaining 5% of the amount due and the amount for fitting, transporting, etc. shall be paid in total, making 80%.</p>
-<p>6. The remaining 20% ​​shall be paid after the work is completed.</p>
-<p>7. If necessary, room, step holder, electricity and water arrangement shall be provided on site.</p>
 
-    </div>
-</div>
-
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-         
-
-    <!-- Main Content - Always Visible -->
-    <div class="hero-content">
-        <!-- Main Logo Image -->
-        <img src="images/222.png" alt="Mastermind Designer Main Logo" class="main-logo">
-        
-        <div class="subtitle">Sculpture works</div>
-        <p>Where Art meets Eternity</p>
-        
-        <div class="hero-buttons">
-            <a href="#gallery" class="btn">View Gallery</a>
-            <a href="#contact" class="btn btn-outline">Get In Touch</a>
-        </div>
-    </div>
-
-    <div class="scroll-indicator"></div>
-</section>
-    
-    <!--gallery-->
-
-    <section id="gallery">
-    <div class="section-title">
-        <h2>Our Work</h2>
-        <div class="line"></div>
-        <p style="font-size: 1.5rem; font-weight: bold; color: white;">
-All works are customised according to requirements</p>
-
-    <div class="gallery-marquee">
-        <div class="gallery-row">
-            
-            <div class="gallery-item" data-category="wedding" onclick="openModal(this)">
-                <div class="image-title-container">Indoor and Outdoor Gardening</div>
-                <img src="images\gardening\IMG-20251123-WA0056.jpg" alt="indoor1">
-            </div>
-            <div class="gallery-item" data-category="portrait" onclick="openModal(this)">
-                <div class="image-title-container">Waterfall and Fountains</div>
-                <img src="images\watefall\WhatsApp Image 2025-11-23 at 15.44.41_d0bf7719.jpg" alt="waterfall1">
-            </div>
-            <div class="gallery-item" data-category="landscape"onclick="openModal(this)">
-                <div class="image-title-container">Cave House</div>
-                <img src="images\cave\WhatsApp Image 2025-11-23 at 15.41.49_2d01510a.jpg" alt="Cave">
-            </div>
-        </div>
-        
-        <div class="gallery-row" aria-hidden="true">
-            <div class="gallery-item" data-category="portrait" onclick="openModal(this)">
-                <div class="image-title-container">Glass House</div>
-                <img src="images\glass_house\HB-iz7Mrwiw_trans_NvBQzQNjv4BqgsaO8O78rhmZrDxTlQBjdO0Jyi0jPPD6Zx1hiwTPhlc.webp" alt="Glass">
-            </div>
-            <div class="gallery-item" data-category="landscape" onclick="openModal(this)">
-                <div class="image-title-container">Bamboo House</div>
-                <img src="images\Bamboo_house\ai-generated-8285636_640.jpg" alt="Bamboo">
-            </div>
-            <div class="gallery-item" data-category="abstract" onclick="openModal(this)">
-                <div class="image-title-container">Wood House</div>
-                <img src="images\wood\7-wooden-house-design-ideas-1024x576.jpg" alt="Wood">
-            </div>
-            <div class="gallery-item" data-category="wedding" onclick="openModal(this)">
-                <div class="image-title-container">Floating House</div>
-                <img src="images\floating\86fb75aa72ff8e584c4dee3f96458528--diy-gazebo-gazebo-plans.jpg" alt="Floating">
-            </div>
-            <div class="gallery-item" data-category="portrait" onclick="openModal(this)">
-                <div class="image-title-container">Adventure Games
-                </div>
-                <img src="images\adventure\Screenshot 2025-11-24 214246.png" alt="Adventure">
-            </div>
-            <div class="gallery-item" data-category="landscape" onclick="openModal(this)">
-                <div class="image-title-container">Glass bridge</div>
-                <img src="images\glass_bridge\Screenshot 2025-11-24 223101.png" alt="bridge">
-            </div>
-        </div>
-    </div>
-    
-    <div class="gallery-marquee reverse-scroll">
-        <div class="gallery-row">
-            <div class="gallery-item" data-category="new-1" onclick="openModal(this)">
-                <div class="image-title-container">Steel Fabrications</div>
-                <img src="images\steel\Steel-Fabrication.jpg" alt="Steel">
-            </div>
-            <div class="gallery-item" data-category="new-2" onclick="openModal(this)">
-                <div class="image-title-container">Epoxy Flooring</div>
-                <img src="images\epoxy\what-is-epoxy-flooring.jpg" alt="Epoxy">
-            </div>
-            <div class="gallery-item" data-category="new-3" onclick="openModal(this)">
-                <div class="image-title-container">Handicrafts</div>
-                <img src="images\handicrafts\Screenshot 2025-11-25 185447.png" alt="Handicrafts">
-            </div>
-             <div class="gallery-item" data-category="new-4" onclick="openModal(this)">
-                <div class="image-title-container">Fibre Works</div>
-                <img src="images\3d\IMG-20251123-WA0020.jpg" alt="Fibre">
-            </div>
-        </div>
-        
-        <div class="gallery-row" aria-hidden="true">
-            <div class="gallery-item" data-category="new-1" onclick="openModal(this)">
-                <div class="image-title-container">Rubber Works</div>
-                <img src="images\rubber\creative-rubber-sculptures05.jpg" alt="Rubber">
-            </div>
-            
-            <div class="gallery-item" data-category="portrait" onclick="openModal(this)">
-                <div class="image-title-container">Wall Painting</div> 
-                <img src="images\Wall_painting\WhatsApp Image 2025-11-23 at 15.06.51_4bb409e5.jpg" alt="Wall">
-            </div>
-            <div class="gallery-item" data-category="landscape" onclick="openModal(this)">
-                <div class="image-title-container">2D-Wall Art</div>
-                <img src="images\2d\IMG-20251121-WA0039.jpg" alt="2D-Wall">
-            </div>
-            <div class="gallery-item" data-category="abstract" onclick="openModal(this)">
-                <div class="image-title-container">3D-Sculptures</div>
-                <img src="images\2d\IMG-20251123-WA0078.jpg" alt="3D">
-            </div>
-        </div>
-    </div>
-</section>
-
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="section-title">
-            <h2>About Us</h2>
-            <div class="line"></div>
-            <p>Passionate about capturing life's beautiful moments</p>
-        </div>
-        
-        <div class="about-content">
-            <div class="about-image">
-                <img src="images/about.png" alt="About Mastermind Designer">
-            </div>
-
-            <div class="about-text">
-                <h3>Creating Art Since 2010</h3>
-                <p>At Mastermind design, we transform imagination into form — crafting sculptures and monuments that celebrate life, memory, and artistry. Each design is a timeless expression of beauty, precision, and purpose — carved to inspire generations.</p>
-                <p>With over a decade of experience, we've had the privilege of working with hundreds of clients, helping them preserve their most precious memories through our unique artistic vision.</p>
-                <div class="stats">
-                    <div class="stat-item">
-                        <h4>500+</h4>
-                        <p>Projects Done</p>
-                    </div>
-                    <div class="stat-item">
-                        <h4>15</h4>
-                        <p>Awards Won</p>
-                    </div>
-                    <div class="stat-item">
-                        <h4>450+</h4>
-                        <p>Happy Clients</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    
-     <!-- Services Section -->
-    <section id="services">
-    <div class="section-title">
-        <h2>Our Services</h2>
-        <div class="line"></div>
-        <p>Professional in sculpture designing and art works</p>
-    </div>
-    
-    <div class="services-gallery">
-        
-        <div class="service-art-card">
-            <img src="images/service1.png" alt="Black and White Portrait Art">
-        </div>
-        
-        <div class="service-art-card">
-            <img src="images/service2.png" alt="Chakra Meditation Art">
-        </div>
-        
-        <div class="service-art-card">
-            <img src="images/service3.png" alt="Floral Portrait">
-        </div>
-        
-        <div class="service-art-card">
-            <img src="images/service4.png" alt="Abstract Portrait">
-        </div>
-        
-        <div class="service-art-card">
-            <img src="images/service5.png" alt="Feather Sculpture">
-        </div>
-        
-        <div class="service-art-card">
-            <img src="images/service6.png" alt="Sunset Boat">
-        </div>
-        
-        <div class="service-art-card">
-            <img src="images/service7.png" alt="Woman Close-up Portrait">
-        </div>
-        
-    </div>
-</section>
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="section-title">
-            <h2>Get In Touch</h2>
-            <div class="line"></div>
-            <p>Let's discuss your project and bring your vision to life</p>
-        </div>
-        
-        <div class="contact-content">
-            <form id="contact-form" onsubmit="return handleSubmit(event)">
-        <input type="text" id="name" placeholder="Name" required>
-        <input type="text" id="subject" placeholder="Subject" required>
-        <textarea id="message" placeholder="Message" rows="5" required></textarea>
-        
-        <button type="submit" class="submit-btn">SEND MESSAGE</button>
-    </form>
-        </div>
-    </section>
-    <div id="image-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        
-        <div class="modal-main-image">
-            <img id="modal-main-img" src="" alt="Main Expanded Image">
-        </div>
-        
-        <div class="modal-info">
-            <h3 id="modal-title">Image Title</h3>
-            <p id="modal-description">Detailed description of the art piece, including techniques, inspiration, and context. This can be a longer paragraph giving background information.</p>
-        </div>
-        
-        <div class="modal-sample-gallery">
-            <h4>More from this Session</h4>
-            <div id="modal-thumbnails" class="thumbnail-grid">
-                <img class="thumbnail" src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23ccc' width='100' height='100'/></svg>" alt="Sample 1">
-            </div>
-        </div>
-    </div>
-</div>
 <script>
-    // Add this JavaScript to your existing <script> section
+  // Mobile menu toggle
+  function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    menu.classList.toggle('hidden');
+  }
 
-// Toggle Menu Function (modify your existing one)
-function toggleMenu() {
-    const nav = document.getElementById('nav');
-    const contactIcons = document.querySelector('.contact-icons');
-    
-    nav.classList.toggle('active');
-    
-    // Close contact icons when menu is opened
-    if (nav.classList.contains('active')) {
-        contactIcons.classList.remove('active');
-    }
-}
+  document.getElementById('menu-toggle').addEventListener('click', toggleMobileMenu);
 
-// Toggle Contact Icons Function (NEW)
-function toggleContactIcons() {
-    const contactIcons = document.querySelector('.contact-icons');
-    const nav = document.getElementById('nav');
-    
-    contactIcons.classList.toggle('active');
-    
-    // Close menu when contact icons are opened
-    if (contactIcons.classList.contains('active')) {
-        nav.classList.remove('active');
+  // Close menu when clicking outside
+  document.addEventListener('click', function(event) {
+    const menu = document.getElementById('mobile-menu');
+    const toggle = document.getElementById('menu-toggle');
+    if (!menu.contains(event.target) && !toggle.contains(event.target)) {
+      menu.classList.add('hidden');
     }
-}
+  });
+</script>
 
-// Close menus when clicking outside (NEW)
-document.addEventListener('click', function(event) {
-    const nav = document.getElementById('nav');
-    const contactIcons = document.querySelector('.contact-icons');
-    const menuToggle = document.querySelector('.menu-toggle');
-    const contactToggle = document.querySelector('.contact-toggle');
-    
-    // Check if click is outside nav and menu toggle
-    if (!nav.contains(event.target) && !menuToggle.contains(event.target)) {
-        nav.classList.remove('active');
-    }
-    
-    // Check if click is outside contact icons and contact toggle
-    if (contactToggle && !contactIcons.contains(event.target) && !contactToggle.contains(event.target)) {
-        contactIcons.classList.remove('active');
-    }
-});
 
-// Header scroll effect (keep your existing code if you have it)
-window.addEventListener('scroll', function() {
-    const header = document.getElementById('header');
-    if (window.scrollY > 50) {
-        header.classList.add('scrolled');
+<!-- Terms Sidebar -->
+<aside id="terms-sidebar" class="fixed right-5 top-1/2 -translate-y-1/2 z-40 w-56 bg-neutral-900 text-white border-2 border-gray-500 rounded-lg shadow-lg flex-col gap-3 p-3 hidden md:flex">
+  <button onclick="document.getElementById('terms-sidebar').style.display='none'" class="ml-auto px-1 text-xl text-red-400 hover:text-white transition">&times;</button>
+  <h3 class="text-lg text-red-500 mb-1">Terms &amp; Conditions</h3>
+  <ul class="list-decimal text-xs font-light pl-5 space-y-1">
+    <li>The work will be completed within 10 to X days.</li>
+    <li>65% of the order amount shall be paid in advance.</li>
+    <li>The remaining 35% shall be divided into two installments and one installment shall be paid when work is 75% complete.</li>
+    <li>15% shall be paid when work is at the completion stage in our workshop.</li>
+    <li>5% of the amount due and cost for fitting, transporting, etc. paid in total, making 80%.</li>
+    <li>The remaining 20% shall be paid after the work is completed.</li>
+    <li>If necessary, room, step holder, electricity and water arrangement shall be provided on site.</li>
+  </ul>
+</aside>
+
+
+<!-- Hero Section -->
+<section id="home" class="flex flex-col items-center justify-center min-h-screen pt-28 pb-14 px-4 bg-cover bg-center relative" style="background-image:url('images/mastermind-bg.jpg');">
+  <img src="images/222.png" alt="Main Logo" class="h-72 mb-4 rounded shadow-xl"/>
+  <div class="text-center">
+    <div class="text-md font-semibold tracking-wide text-gray-200 mb-2">Sculpture works</div>
+    <h1 class="font-serif text-4xl sm:text-6xl font-bold text-white drop-shadow mb-5">Where Art Meets Eternity</h1>
+    <div class="flex gap-4 justify-center mt-6">
+      <a href="#gallery" class="px-6 py-2 bg-red-600 text-white font-semibold rounded hover:bg-red-500 shadow transition">View Gallery</a>
+      <a href="#contact" class="px-6 py-2 border-2 border-white text-white rounded font-medium hover:bg-white hover:text-black transition">Get In Touch</a>
+    </div>
+  </div>
+  <div class="absolute bottom-5 left-1/2 -translate-x-1/2 text-gray-300 animate-bounce text-2xl">&#8595;</div>
+</section>
+<!-- Gallery Section -->
+<section id="gallery" class="py-20 px-5 bg-black bg-opacity-90 overflow-hidden">
+  <div class="w-full">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold uppercase mb-2 tracking-wider">Our Work</h2>
+      <p class="text-base font-semibold text-gray-100">All works are customised according to requirement</p>
+    </div>
+    
+    <!-- Row 1: Slides Left to Right -->
+    <div class="gallery-container relative mb-8 overflow-hidden cursor-grab active:cursor-grabbing" id="gallery-row-1">
+      <div class="gallery-track-1 flex gap-6" style="width: fit-content;">
+        <!-- Original Images -->
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('gardening')">
+          <img src="images/gardening/IMG-20251123-WA0056.jpg" alt="Indoor and Outdoor Gardening" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false" />
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 text-white px-3 py-2 text-sm font-medium">Indoor and Outdoor Gardening</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('waterfall')">
+          <img src="images/watefall/WhatsApp Image 2025-11-23 at 15.44.41_d0bf7719.jpg" alt="Waterfall and Fountains" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false" />
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Waterfall and Fountains</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('cave')">
+          <img src="images/cave/WhatsApp Image 2025-11-23 at 15.41.49_2d01510a.jpg" alt="Cave House" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false" />
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Cave House</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('glass')">
+          <img src="images/glass_house/HB-iz7Mrwiw_trans_NvBQzQNjv4BqgsaO8O78rhmZrDxTlQBjdO0Jyi0jPPD6Zx1hiwTPhlc.webp" alt="Glass House" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false" />
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Glass House</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('bamboo')">
+          <img src="images/Bamboo_house/ai-generated-8285636_640.jpg" alt="Bamboo House" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false" />
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Bamboo House</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('wood')">
+          <img src="images/wood/7-wooden-house-design-ideas-1024x576.jpg" alt="Wood House" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false" />
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Wood House</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('floating')">
+          <img src="images/floating/86fb75aa72ff8e584c4dee3f96458528--diy-gazebo-gazebo-plans.jpg" alt="Floating House" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false"/>
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Floating House</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('adventure')">
+          <img src="images/adventure/Screenshot 2025-11-24 214246.png" alt="Adventure Games" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false" />
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Adventure Games</span>
+        </div>
+        
+        <!-- Duplicates for seamless loop -->
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('gardening')">
+          <img src="images/gardening/IMG-20251123-WA0056.jpg" alt="Indoor and Outdoor Gardening" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false" />
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 text-white px-3 py-2 text-sm font-medium">Indoor and Outdoor Gardening</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('waterfall')">
+          <img src="images/watefall/WhatsApp Image 2025-11-23 at 15.44.41_d0bf7719.jpg" alt="Waterfall and Fountains" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false" />
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Waterfall and Fountains</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('cave')">
+          <img src="images/cave/WhatsApp Image 2025-11-23 at 15.41.49_2d01510a.jpg" alt="Cave House" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false" />
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Cave House</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('glass')">
+          <img src="images/glass_house/HB-iz7Mrwiw_trans_NvBQzQNjv4BqgsaO8O78rhmZrDxTlQBjdO0Jyi0jPPD6Zx1hiwTPhlc.webp" alt="Glass House" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false" />
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Glass House</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('bamboo')">
+          <img src="images/Bamboo_house/ai-generated-8285636_640.jpg" alt="Bamboo House" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false" />
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Bamboo House</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('wood')">
+          <img src="images/wood/7-wooden-house-design-ideas-1024x576.jpg" alt="Wood House" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false" />
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Wood House</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('floating')">
+          <img src="images/floating/86fb75aa72ff8e584c4dee3f96458528--diy-gazebo-gazebo-plans.jpg" alt="Floating House" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false"/>
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Floating House</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('adventure')">
+          <img src="images/adventure/Screenshot 2025-11-24 214246.png" alt="Adventure Games" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false" />
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Adventure Games</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: Slides Right to Left -->
+    <div class="gallery-container relative overflow-hidden cursor-grab active:cursor-grabbing" id="gallery-row-2">
+      <div class="gallery-track-2 flex gap-6" style="width: fit-content;">
+        <!-- Original Images -->
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('bridge')">
+          <img src="images/glass_bridge/Screenshot 2025-11-24 223101.png" alt="Glass Bridge" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false"/>
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Glass Bridge</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('steel')">
+          <img src="images/steel/Steel-Fabrication.jpg" alt="Steel Fabrications" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false"/>
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Steel Fabrications</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('epoxy')">
+          <img src="images/epoxy/what-is-epoxy-flooring.jpg" alt="Epoxy Flooring" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false"/>
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Epoxy Flooring</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('handicrafts')">
+          <img src="images/handicrafts/Screenshot 2025-11-25 185447.png" alt="Handicrafts" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false"/>
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Handicrafts</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('fibre')">
+          <img src="images/3d/IMG-20251123-WA0020.jpg" alt="Fibre Works" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false"/>
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Fibre Works</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('rubber')">
+          <img src="images/rubber/creative-rubber-sculptures05.jpg" alt="Rubber Works" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false"/>
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Rubber Works</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('wallpainting')">
+          <img src="images/Wall_painting/WhatsApp Image 2025-11-23 at 15.06.51_4bb409e5.jpg" alt="Wall Painting" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false"/>
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Wall Painting</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('2d')">
+          <img src="images/2d/IMG-20251121-WA0039.jpg" alt="2D-Wall Art" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false"/>
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">2D-Wall Art</span>
+        </div>
+        
+        <!-- Duplicates -->
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('bridge')">
+          <img src="images/glass_bridge/Screenshot 2025-11-24 223101.png" alt="Glass Bridge" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false"/>
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Glass Bridge</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('steel')">
+          <img src="images/steel/Steel-Fabrication.jpg" alt="Steel Fabrications" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false"/>
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Steel Fabrications</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('epoxy')">
+          <img src="images/epoxy/what-is-epoxy-flooring.jpg" alt="Epoxy Flooring" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false"/>
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Epoxy Flooring</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('handicrafts')">
+          <img src="images/handicrafts/Screenshot 2025-11-25 185447.png" alt="Handicrafts" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false"/>
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Handicrafts</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('fibre')">
+          <img src="images/3d/IMG-20251123-WA0020.jpg" alt="Fibre Works" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false"/>
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Fibre Works</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('rubber')">
+          <img src="images/rubber/creative-rubber-sculptures05.jpg" alt="Rubber Works" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false"/>
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Rubber Works</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('wallpainting')">
+          <img src="images/Wall_painting/WhatsApp Image 2025-11-23 at 15.06.51_4bb409e5.jpg" alt="Wall Painting" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false"/>
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">Wall Painting</span>
+        </div>
+        <div class="gallery-item flex-shrink-0 w-64 h-64 relative group bg-[#1a1a1a] border-8 border-gray-500 rounded shadow overflow-hidden" onclick="openModal('2d')">
+          <img src="images/2d/IMG-20251121-WA0039.jpg" alt="2D-Wall Art" class="object-cover w-full h-full transition group-hover:scale-105" draggable="false"/>
+          <span class="absolute bottom-0 left-0 w-full bg-black/60 px-3 py-2 text-sm font-medium">2D-Wall Art</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal -->
+<div id="imageModal" class="fixed inset-0 bg-black/95 z-50 hidden items-center justify-center p-4">
+  <div class="bg-neutral-900 rounded-lg max-w-5xl w-full max-h-[90vh] overflow-y-auto relative">
+    <!-- Close Button -->
+    <button onclick="closeModal()" class="absolute top-2 right-2 text-white text-2xl w-8 h-8 flex items-center justify-center hover:text-red-500 z-20 bg-black/50 rounded-full transition">&times;</button>
+    
+    <!-- Previous Arrow - Top Left -->
+    <button onclick="navigateModal('prev')" class="absolute left-2 top-2 bg-red-600/90 hover:bg-red-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-xl z-20 transition shadow-lg">
+      &#8249;
+    </button>
+    
+    <!-- Next Arrow - Top Right (next to close) -->
+    <button onclick="navigateModal('next')" class="absolute right-12 top-2 bg-red-600/90 hover:bg-red-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-xl z-20 transition shadow-lg">
+      &#8250;
+    </button>
+    
+    <div class="grid md:grid-cols-2 gap-6 p-6 pt-12">
+      <!-- Main Image -->
+      <div>
+        <img id="modalMainImage" src="" alt="" class="w-full h-auto rounded-lg"/>
+      </div>
+      
+      <!-- Description & Samples -->
+      <div class="text-white">
+        <h2 id="modalTitle" class="text-2xl font-bold mb-4 text-red-500"></h2>
+        <p id="modalDescription" class="text-gray-300 mb-6 leading-relaxed"></p>
+        
+        <h3 class="text-lg font-semibold mb-3">Sample Images</h3>
+        <div id="modalSamples" class="grid grid-cols-2 gap-3">
+          <!-- Sample images will be inserted here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Animation for left-to-right scroll */
+  @keyframes slide-left {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Animation for right-to-left scroll */
+  @keyframes slide-right {
+    0% {
+      transform: translateX(-50%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  .gallery-track-1 {
+    animation: slide-left 40s linear infinite;
+  }
+
+  .gallery-track-2 {
+    animation: slide-right 40s linear infinite;
+  }
+
+  /* Pause animation when dragging or hovering */
+  .gallery-container.dragging .gallery-track-1,
+  .gallery-container.dragging .gallery-track-2,
+  .gallery-container:hover .gallery-track-1,
+  .gallery-container:hover .gallery-track-2 {
+    animation-play-state: paused !important;
+  }
+
+  /* Prevent text selection while dragging */
+  .gallery-container {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    touch-action: pan-y;
+  }
+
+  .gallery-container * {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+
+  /* Only prevent pointer events on images and spans */
+  .gallery-item img,
+  .gallery-item span {
+    pointer-events: none;
+  }
+
+  /* Mobile responsive arrow positioning */
+  @media (max-width: 768px) {
+    #imageModal .absolute.left-2,
+    #imageModal .absolute.right-12,
+    #imageModal .absolute.right-2 {
+      top: 4px;
+      width: 32px;
+      height: 32px;
+      font-size: 18px;
+    }
+  }
+</style>
+
+<script>
+  // Image data with descriptions and sample images
+  const imageData = {
+    gardening: {
+      title: "Indoor and Outdoor Gardening",
+      image: "images/gardening/IMG-20251123-WA0056.jpg",
+      description: "Transform your space with our custom gardening solutions. We create beautiful indoor plant arrangements and stunning outdoor landscapes that blend nature with modern design.",
+      samples: [
+        "images/gardening/IMG-20251123-WA0056.jpg",
+        "images/gardening/IMG-20251123-WA0080.jpg"
+      ]
+    },
+    waterfall: {
+      title: "Waterfall and Fountains",
+      image: "images/watefall/WhatsApp Image 2025-11-23 at 15.44.41_d0bf7719.jpg",
+      description: "Experience the soothing sounds of flowing water with our custom waterfalls and fountains. Perfect for creating a tranquil atmosphere in any setting.",
+      samples: [
+        "images/watefall/IMG-20251123-WA0060.jpg",
+        "images/watefall/IMG-20251123-WA0024.jpg"
+      ]
+    },
+    cave: {
+      title: "Cave House",
+      image: "images/cave/WhatsApp Image 2025-11-23 at 15.41.49_2d01510a.jpg",
+      description: "Unique cave-style architecture blending natural rock formations with modern living. Perfect for creating a one-of-a-kind living space.",
+      samples: [
+        "images/cave/WhatsApp Image 2025-11-23 at 15.44.41_14b1214a.jpg",
+        "images/cave/maxresdefault.jpg"
+      ]
+    },
+    glass: {
+      title: "Glass House",
+      image: "images/glass_house/HB-iz7Mrwiw_trans_NvBQzQNjv4BqgsaO8O78rhmZrDxTlQBjdO0Jyi0jPPD6Zx1hiwTPhlc.webp",
+      description: "Modern glass-house architecture featuring transparent walls and immersive views. Spacious, light-filled environments with contemporary design.",
+      samples: [
+        "images/glasshouse/b3dbd5a12136cb4f5f20c0d33cf49d99.jpg",
+        "images/glasshouse/1-beautiful-glass-house.jpg"
+      ]
+    },
+    bamboo: {
+      title: "Bamboo House",
+      image: "images/Bamboo_house/ai-generated-8285636_640.jpg",
+      description: "Eco-friendly bamboo architecture showcasing sustainable design and natural textures. Elegant structural possibilities with environmentally conscious materials.",
+      samples: [
+        "images/Bamboohouse/Screenshot 2025-11-24 214757.png",
+        "images/Bamboohouse/ai-generated-8285636_640.jpg"
+      ]
+    },
+    wood: {
+      title: "Wood House",
+      image: "images/wood/7-wooden-house-design-ideas-1024x576.jpg",
+      description: "Wooden homes emphasizing warm materials, rustic charm, and natural craftsmanship. Showcasing the versatility and beauty of timber design.",
+      samples: [
+        "images/wood/7-wooden-house-design-ideas-1024x576.jpg",
+        "images/wood/7-wooden-house-design-ideas-1024x576.jpg"
+      ]
+    },
+    floating: {
+      title: "Floating House",
+      image: "images/floating/86fb75aa72ff8e584c4dee3f96458528--diy-gazebo-gazebo-plans.jpg",
+      description: "Innovative floating or water-based homes designed for relaxation and scenic living. Structures that harmonize with lakes, rivers, or coastal settings.",
+      samples: [
+        "images/floating/add8c63afea6665456551919a4cd9b90.jpg",
+        "images/floating/86fb75aa72ff8e584c4dee3f96458528--diy-gazebo-gazebo-plans.jpg"
+      ]
+    },
+    adventure: {
+      title: "Adventure Games",
+      image: "images/adventure/Screenshot 2025-11-24 214246.png",
+      description: "Outdoor adventure activities capturing thrilling moments and challenging terrains. Emphasizing excitement, creativity, and immersive game experiences.",
+      samples: [
+        "images/adventure/Screenshot 2025-11-24 213947.png",
+        "images/adventure/Screenshot 2025-11-24 214042.png"
+      ]
+    },
+    bridge: {
+      title: "Glass Bridge",
+      image: "images/glass_bridge/Screenshot 2025-11-24 223101.png",
+      description: "Bold architectural glass-bottom bridges featuring transparent walkways and dramatic elevated views. Modern engineering meets scenic landscapes.",
+      samples: [
+        "images/glassbridge/Screenshot 2025-11-24 223101.png",
+        "images/glassbridge/R.jpg"
+      ]
+    },
+    steel: {
+      title: "Steel Fabrications",
+      image: "images/steel/Steel-Fabrication.jpg",
+      description: "Durable steel structures showcasing industrial designs and precision engineering. Illustrating the strength and versatility of metal fabrication.",
+      samples: [
+        "images/steel/Steel-Fabrication.jpg",
+        "images/steel/Steel-Fabrication.jpg"
+      ]
+    },
+    epoxy: {
+      title: "Epoxy Flooring",
+      image: "images/epoxy/what-is-epoxy-flooring.jpg",
+      description: "Stylish epoxy flooring designs featuring glossy finishes, seamless textures, and modern patterns for residential and commercial interiors.",
+      samples: [
+        "images/epoxy/64dbefacaa32cb34b607a4219db66687.jpg",
+        "images/epoxy/what-is-epoxy-flooring.jpg"
+      ]
+    },
+    handicrafts: {
+      title: "Handicrafts",
+      image: "images/handicrafts/Screenshot 2025-11-25 185447.png",
+      description: "Handmade creations reflecting traditional skills, artistry, and cultural expression. Intricate work crafted with care and creativity.",
+      samples: [
+        "images/handicrafts/Screenshot 2025-11-25 185447.png",
+        "images/handicrafts/Screenshot 2025-11-25 185447.png"
+      ]
+    },
+    fibre: {
+      title: "Fibre Works",
+      image: "images/3d/IMG-20251123-WA0020.jpg",
+      description: "Dynamic fibre-based creations including artistic installations and sculptural forms. Demonstrating texture, innovation, and craftsmanship.",
+      samples: [
+        "images/3d/WhatsApp Image 2025-11-23 at 15.25.52_813c113c.jpg",
+        "images/3d/IMG-20251123-WA0021.jpg"
+      ]
+    },
+    rubber: {
+      title: "Rubber Works",
+      image: "images/rubber/creative-rubber-sculptures05.jpg",
+      description: "Rubber-based artworks showcasing flexibility, imaginative forms, and unique sculptural techniques using rubber materials.",
+      samples: [
+        "images/rubber/creative-rubber-sculptures05.jpg",
+        "images/rubber/creative-rubber-sculptures05.jpg"
+      ]
+    },
+    wallpainting: {
+      title: "Wall Painting",
+      image: "images/Wall_painting/WhatsApp Image 2025-11-23 at 15.06.51_4bb409e5.jpg",
+      description: "Expressive wall art featuring creative murals, painted textures, and decorative designs enhancing interior and exterior spaces.",
+      samples: [
+        "images/Wallpainting/WhatsApp Image 2025-11-23 at 15.06.51_4bb409e5.jpg",
+        "images/Wallpainting/WhatsApp Image 2025-11-23 at 15.06.51_4bb409e5.jpg"
+      ]
+    },
+    '2d': {
+      title: "2D-Wall Art",
+      image: "images/2d/IMG-20251121-WA0039.jpg",
+      description: "Timeless wall art focusing on light and shadow. Exploring mood and simplicity through minimalist composition and deep contrast.",
+      samples: [
+        "images/2d/WhatsApp Image 2025-11-23 at 15.37.39_98b65ec8.jpg",
+        "images/2d/IMG-20251123-WA0078.jpg"
+      ]
+    }
+  };
+
+  // Order of categories for navigation
+  const categoryOrder = ['gardening', 'waterfall', 'cave', 'glass', 'bamboo', 'wood', 'floating', 'adventure', 'bridge', 'steel', 'epoxy', 'handicrafts', 'fibre', 'rubber', 'wallpainting', '2d'];
+  let currentCategoryIndex = 0;
+
+  // Modal functions
+  function openModal(category) {
+    const data = imageData[category];
+    if (!data) return;
+
+    currentCategoryIndex = categoryOrder.indexOf(category);
+
+    document.getElementById('modalTitle').textContent = data.title;
+    document.getElementById('modalMainImage').src = data.image;
+    document.getElementById('modalDescription').textContent = data.description;
+
+    const samplesContainer = document.getElementById('modalSamples');
+    samplesContainer.innerHTML = '';
+    data.samples.forEach(sample => {
+      const img = document.createElement('img');
+      img.src = sample;
+      img.className = 'w-full h-24 object-cover rounded border-2 border-gray-700 hover:border-red-500 transition cursor-pointer';
+      img.onclick = () => document.getElementById('modalMainImage').src = sample;
+      samplesContainer.appendChild(img);
+    });
+
+    document.getElementById('imageModal').classList.remove('hidden');
+    document.getElementById('imageModal').classList.add('flex');
+  }
+
+  function closeModal() {
+    document.getElementById('imageModal').classList.add('hidden');
+    document.getElementById('imageModal').classList.remove('flex');
+  }
+
+  function navigateModal(direction) {
+    if (direction === 'next') {
+      currentCategoryIndex = (currentCategoryIndex + 1) % categoryOrder.length;
     } else {
-        header.classList.remove('scrolled');
+      currentCategoryIndex = (currentCategoryIndex - 1 + categoryOrder.length) % categoryOrder.length;
     }
-});
-    /* --- JavaScript for Modal Functionality --- */
+    openModal(categoryOrder[currentCategoryIndex]);
+  }
 
-// Get the modal element
-const modal = document.getElementById("image-modal");
-// Get the close button
-const closeBtn = document.getElementsByClassName("close-btn")[0];
-
-// Data structure to hold information and sample images for each gallery item
-// You MUST add a new entry for every image you have in the gallery
-const imageData = {
-    // Key: The alt text of the image (or any unique ID you choose)
-    "indoor1": {
-        title: "Indoor and Outdoor Gardening",
-        description: "A collection showcasing creative gardening ideas, blending indoor plant styling with refreshing outdoor landscapes. The images highlight natural textures, greenery, and modern decorative arrangements.",
-        samples: [
-            "images/gardening/WhatsApp Image 2025-11-23 at 15.46.24_7be561be.jpg",
-            "images/gardening/IMG-20251123-WA0080.jpg",
-            "images/gardening/IMG-20251123-WA0056.jpg"
-        ]
-    },
-    "waterfall1": {
-        title: "Waterfall and Fountains",
-        description: "A visual study of flowing water features, from natural waterfalls to artistic man-made fountains. These images emphasize movement, serenity, and the calming beauty of water in nature and design",
-        samples: [
-            "images/watefall/WhatsApp Image 2025-11-23 at 15.44.41_d0bf7719.jpg",
-            "images/watefall/IMG-20251123-WA0060.jpg",
-            "images/watefall/IMG-20251123-WA0024.jpg"
-        ]
-    },
-    "Cave": {
-        title: "Cave House",
-        description: "A look into unique cave-style architecture that blends natural rock formations with modern living elements. The series highlights organic shapes, carved interiors, and earthy, atmospheric spaces.",
-        samples: [
-            "images/cave/WhatsApp Image 2025-11-23 at 15.41.49_2d01510a.jpg",
-            "images/cave/WhatsApp Image 2025-11-23 at 15.44.41_14b1214a.jpg",
-            "images/cave/maxresdefault.jpg"
-        ]
-    },
-    "Glass": {
-        title: "Glass House",
-        description: "A showcase of modern glass-house architecture featuring transparent walls, sleek structures, and immersive views. The images capture spacious, light-filled environments and contemporary design",
-        samples: [
-            "images/glass_house/b3dbd5a12136cb4f5f20c0d33cf49d99.jpg",
-            "images/glass_house/1-beautiful-glass-house.jpg"
-        ]
-    },
-    "Bamboo": {
-        title: "Bamboo House",
-        description: "A collection featuring eco-friendly bamboo architecture. These images highlight sustainable design, natural textures, and the elegant structural possibilities of bamboo construction",
-        samples: [
-            "images/Bamboo_house/Screenshot 2025-11-24 214757.png",
-            "images/Bamboo_house/ai-generated-8285636_640.jpg"
-        ]
-    },
-    "Wood": {
-        title: "Wood House",
-        description: "A visual exploration of wooden homes, emphasizing warm materials, rustic charm, and natural craftsmanship. The series displays the versatility and beauty of timber design.",
-        samples: [
-            "images/wood/7-wooden-house-design-ideas-1024x576.jpg"
-        ]
-    },
-    "Floating": {
-        title: "Floating House",
-        description: "A set of images showcasing floating or water-based homes designed for relaxation and scenic living. The series highlights innovative structures that harmonize with lakes, rivers, or coastal settings",
-        samples: [
-            "images/floating/add8c63afea6665456551919a4cd9b90.jpg",
-            "images/floating/86fb75aa72ff8e584c4dee3f96458528--diy-gazebo-gazebo-plans.jpg"
-        ]
-    },
-    "Adventure": {
-        title: "Adventure Games",
-        description: "A vibrant collection of outdoor adventure activities, capturing thrilling moments, challenging terrains, and playful exploration. The images emphasize excitement, creativity, and immersive game experiences.",
-        samples: [
-            "images/adventure/Screenshot 2025-11-24 214246.png",
-            "images/adventure/Screenshot 2025-11-24 213947.png",
-            "images/adventure/Screenshot 2025-11-24 214042.png",
-            "images/adventure/Screenshot 2025-11-24 214615.png"
-        ]
-    },
-    "bridge": {
-        title: "Glass bridge",
-        description: "A striking showcase of glass-bottom bridges, featuring their bold architectural lines, transparent walkways, and dramatic elevated views. The images highlight modern engineering and scenic landscapes.",
-        samples: [
-            "images/glass_bridge/Screenshot 2025-11-24 223101.png",
-            "images/glass_bridgeR/.jpg"
-        ]
-    },
-    "Steel": {
-        title: "Steel Fabrications",
-        description: "A display of steel craftsmanship, focusing on durable structures, industrial designs, and precision engineering. The images illustrate the strength and versatility of metal fabrication.",
-        samples: [
-            "images/steel/Steel-Fabrication.jpg"
-        ]
-    },
-    "Epoxy": {
-        title: "Epoxy Flooring",
-        description: "A series highlighting stylish epoxy flooring designs, featuring glossy finishes, seamless textures, and modern patterns suitable for residential and commercial interiors.",
-        samples: [
-            "images/epoxy6/4dbefacaa32cb34b607a4219db66687.jpg",
-            "images/epoxy/what-is-epoxy-flooring.jpg"
-        ]
-    },
-    "Handicrafts": {
-        title: "Handicrafts",
-        description: "A celebration of handmade creations reflecting traditional skills, artistry, and cultural expression. The images showcase intricate work crafted with care and creativity",
-        samples: [
-            "images/handicrafts/Screenshot 2025-11-25 185447.png"
-        ]
-    },
-    "Fibre": {
-        title: "Fibre Works",
-        description: "A dynamic set of fibre-based creations, including artistic installations, decorative pieces, and sculptural forms. The images demonstrate texture, innovation, and craftsmanship using fibre materials.",
-        samples: [
-            "images/3d/WhatsApp Image 2025-11-23 at 15.25.52_813c113c.jpg",
-            "images/3d/IMG-20251123-WA0021.jpg",
-            "images/3d/WhatsApp Image 2025-11-23 at 15.27.11_488a5a72.jpg"
-        ]
-    },
-    "Rubber": {
-        title: "Rubber Works",
-        description: "A showcase of rubber-based artworks and creations, highlighting flexibility, imaginative forms, and unique sculptural techniques made from rubber materials.",
-        samples: [
-            "images/rubber/creative-rubber-sculptures05.jpg"
-        ]
-    },
-    
-    "Wall": {
-        title: "Wall Painting",
-        description: "A collection of expressive wall art, featuring creative murals, painted textures, and decorative designs that enhance interior and exterior spaces.",
-        samples: [
-            "images/Wall_painting/WhatsApp Image 2025-11-23 at 15.06.51_4bb409e5.jpg"
-
-        ]
-    },
-    "2D-Wall": {
-        title: "2D-Wall Art",
-        description: "A timeless black and white studio portrait focusing on light and shadow. This series explores mood and simplicity through minimalist composition and deep contrast.",
-        samples: [
-            "images/2d/WhatsApp Image 2025-11-23 at 15.37.39_98b65ec8.jpg",
-            "images/2d/IMG-20251123-WA0078.jpg",
-            "images/2d/2d.jpg"
-        ]
-    },
-    "3D": {
-        title: "3D-Sculptures",
-        description: "A set of three-dimensional sculptures emphasizing form, depth, and artistic craftsmanship. The images highlight detailed designs created using modern and traditional sculpting techniques.",
-        samples: [
-            "images/3d/IMG-20251123-WA0023.jpg",
-            "images/3d/IMG-20251121-WA0037.jpg",
-            "images/3d/IMG-20251121-WA0037.jpg"
-        ]
-    },
-    // Add data for all other images here (e.g., "Abstract Forms", "Wedding Day", etc.)
-    // If an image is missing data, the modal will display default info.
-};
-
-
-// Function to open the modal
-function openModal(item) {
-    const imgElement = item.querySelector('img');
-    const imgSrc = imgElement.src;
-    const imgAlt = imgElement.alt.replace(" Duplicate", ""); // Use the original alt text as the key
-
-    // 1. Get data for the clicked image
-    const data = imageData[imgAlt] || {};
-    
-    // 2. Populate Main Image
-    document.getElementById("modal-main-img").src = imgSrc;
-    
-    // 3. Populate Info
-    document.getElementById("modal-title").textContent = data.title || imgAlt;
-    document.getElementById("modal-description").textContent = data.description || "No detailed information available for this piece.";
-    
-    // 4. Populate Thumbnails
-    const thumbnailContainer = document.getElementById("modal-thumbnails");
-    thumbnailContainer.innerHTML = ''; // Clear previous thumbnails
-    
-    const samples = data.samples || [];
-    if (samples.length > 0) {
-        samples.forEach(sampleSrc => {
-            const thumb = document.createElement('img');
-            thumb.className = 'thumbnail';
-            thumb.src = sampleSrc;
-            thumb.alt = data.title + " Sample";
-            // Add click event to switch the main image
-            thumb.onclick = function() {
-                document.getElementById("modal-main-img").src = this.src;
-            };
-            thumbnailContainer.appendChild(thumb);
-        });
-    } else {
-         thumbnailContainer.innerHTML = '<p style="color:#aaa;">No additional sample images available.</p>';
-    }
-
-    // 5. Show the modal
-    modal.style.display = "block";
-}
-
-// Function to close the modal
-function closeModal() {
-    modal.style.display = "none";
-}
-
-// Close the modal when the user clicks on (x)
-closeBtn.onclick = closeModal;
-
-// Close the modal when the user clicks anywhere outside of the modal
-window.onclick = function(event) {
-    if (event.target == modal) {
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    const modal = document.getElementById('imageModal');
+    if (!modal.classList.contains('hidden')) {
+      if (e.key === 'ArrowRight') {
+        navigateModal('next');
+      } else if (e.key === 'ArrowLeft') {
+        navigateModal('prev');
+      } else if (e.key === 'Escape') {
         closeModal();
+      }
     }
-}
+  });
 
-</script>
-<script>
-    function hideTermsBox() {
-        // Get the container element (which has the fixed position)
-        const termsContainer = document.querySelector('.terms-sidebar-container');
+  // Close modal on outside click
+  document.getElementById('imageModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // Drag to scroll functionality
+  function initDragScroll() {
+    const containers = [
+      { container: document.getElementById('gallery-row-1'), track: document.querySelector('.gallery-track-1') },
+      { container: document.getElementById('gallery-row-2'), track: document.querySelector('.gallery-track-2') }
+    ];
+
+    containers.forEach(({ container, track }) => {
+      if (!container || !track) return;
+      
+      let isDragging = false;
+      let startX = 0;
+      let currentTranslate = 0;
+      let prevTranslate = 0;
+      let hasMoved = false;
+
+      function getTranslateX(element) {
+        const style = window.getComputedStyle(element);
+        const matrix = new DOMMatrix(style.transform);
+        return matrix.m41;
+      }
+
+      function setTranslateX(x) {
+        track.style.transform = `translateX(${x}px)`;
+      }
+
+      function onMouseDown(e) {
+        isDragging = true;
+        hasMoved = false;
+        container.classList.add('dragging');
+        startX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+        prevTranslate = getTranslateX(track);
+        container.style.cursor = 'grabbing';
+      }
+
+      function onMouseMove(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+        const currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+        const diff = currentX - startX;
+        if (Math.abs(diff) > 5) hasMoved = true;
+        currentTranslate = prevTranslate + diff;
+        setTranslateX(currentTranslate);
+      }
+
+      function onMouseUp() {
+        if (!isDragging) return;
+        isDragging = false;
+        container.classList.remove('dragging');
+        container.style.cursor = 'grab';
         
-        // Add the 'hidden' class to the container
-        if (termsContainer) {
-            termsContainer.classList.add('hidden');
+        if (hasMoved) {
+          setTimeout(() => hasMoved = false, 100);
         }
-    }
-    
-    // Optional: If you want to show it again, you would need another button/trigger.
-    function showTermsBox() {
+      }
 
-        const termsContainer = document.querySelector('.terms-sidebar-container');
-        if (termsContainer) {
+      container.addEventListener('mousedown', onMouseDown);
+      container.addEventListener('mousemove', onMouseMove);
+      container.addEventListener('mouseup', onMouseUp);
+      container.addEventListener('mouseleave', onMouseUp);
 
-            termsContainer.classList.remove('hidden');
+      container.addEventListener('touchstart', onMouseDown, { passive: false });
+      container.addEventListener('touchmove', onMouseMove, { passive: false });
+      container.addEventListener('touchend', onMouseUp);
+
+      container.addEventListener('click', (e) => {
+        if (hasMoved) {
+          e.stopPropagation();  
+          e.preventDefault();
         }
-    }
+      }, true);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDragScroll);
+  } else {
+    initDragScroll();
+  }
 </script>
-<script>
-    // ... (your existing hideTermsBox and showTermsBox functions) ...
+ 
+<!-- About Section -->
+<section id="about" class="py-20 px-5 bg-neutral-900">
+  <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+    <div>
+      <img src="images/about.png" alt="About Mastermind Designer" class="rounded-xl shadow-lg w-full h-96 object-cover"/>
+    </div>
+    <div>
+      <h2 class="text-3xl font-bold uppercase mb-3">About Us</h2>
+      <p class="text-gray-100 text-lg mb-3">Passionate about capturing life's beautiful moments.</p>
+      <p class="mb-4">At Mastermind Design, we transform imagination into form, crafting sculptures and monuments that celebrate life, memory, and artistry. Each design is a timeless expression of beauty and purpose built to inspire generations.</p>
+      <div class="grid grid-cols-3 gap-5 mt-7">
+        <div class="text-center">
+          <div class="text-2xl font-bold text-red-500">500+</div>
+          <div class="text-xs text-gray-300 mt-2">Projects Done</div>
+        </div>
+        <div class="text-center">
+          <div class="text-2xl font-bold text-red-500">15</div>
+          <div class="text-xs text-gray-300 mt-2">Awards Won</div>
+        </div>
+        <div class="text-center">
+          <div class="text-2xl font-bold text-red-500">450+</div>
+          <div class="text-xs text-gray-300 mt-2">Happy Clients</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    const flashGridItems = document.querySelectorAll('.flash-grid-item');
-    const numItems = flashGridItems.length;
-    let currentIndex = 0;
-    const flashDuration = 500; // How long each photo is visible (0.5 seconds)
-    const pauseBetweenFlashes = 200; // Pause before the next photo appears (0.2 seconds)
-    const finalDisappearDelay = 5000; // All photos disappear after 5 seconds of the sequence finishing
-
-    function startFlashSequence() {
-        if (numItems === 0) return; // No items to flash
-
-        // Function to flash one item
-        function flashItem(indexToShow) {
-            // Hide the previous item if it exists
-            if (indexToShow > 0) {
-                flashGridItems[indexToShow - 1].classList.remove('visible');
-            } else if (indexToShow === 0 && currentIndex === numItems) { // This handles the wrap-around from last to first
-                 flashGridItems[numItems - 1].classList.remove('visible');
-            }
-
-            // Show the current item
-            flashGridItems[indexToShow].classList.add('visible');
-
-            currentIndex = indexToShow + 1;
-
-            if (currentIndex < numItems) {
-                // If there are more items, schedule the next flash
-                setTimeout(() => {
-                    flashItem(currentIndex);
-                }, flashDuration + pauseBetweenFlashes);
-            } else {
-                // All items have flashed once, now handle the final disappearance
-                console.log("All items flashed. Scheduling final disappearance.");
-                setTimeout(disappearAllPhotos, finalDisappearDelay);
-            }
-        }
-        
-        // Function to make all photos disappear
-        function disappearAllPhotos() {
-            console.log("Disappearing all photos.");
-            flashGridItems.forEach(item => {
-                item.classList.remove('visible'); // Ensure any currently visible one disappears
-                item.classList.add('final-hide'); // Add a class for final hiding if distinct transition is needed
-            });
-            // Optional: If you want to restart the sequence after a longer delay:
-            // setTimeout(restartSequence, anotherLongerDelay);
-        }
-
-        // Start the sequence with the first item
-        flashItem(0);
-    }
-
-    // You can call startFlashSequence() when the page loads, or when the user scrolls to it etc.
-    // For now, let's start it once the DOM is fully loaded.
-    document.addEventListener('DOMContentLoaded', startFlashSequence);
-
-// Handle form submission and send to WhatsApp
-function handleSubmit(event) {
-    event.preventDefault(); // Prevent default form submission
+<!-- Services Section -->
+<section id="services" class="py-20 px-5 bg-black">
+  <div class="max-w-6xl mx-auto">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold uppercase mb-2 tracking-wider">Our Services</h2>
+      <p class="text-base font-semibold text-gray-100">Professional in sculpture designing and art works</p>
+    </div>
     
-    // Get form values
+    <!-- Collage Grid -->
+    <div class="grid grid-cols-3 auto-rows-[200px] gap-5">
+      <!-- Tall Image 1 - spans 2 rows -->
+      <div class="row-span-2 relative overflow-hidden border-8 border-white shadow-2xl hover:scale-105 transition-transform duration-300">
+        <img src="images/service1.png" alt="Black and White Portrait Art" class="w-full h-full object-cover"/>
+      </div>
+      
+      <!-- Regular Image 2 -->
+      <div class="relative overflow-hidden border-8 border-white shadow-2xl hover:scale-105 transition-transform duration-300">
+        <img src="images/service2.png" alt="Chakra Meditation Art" class="w-full h-full object-cover"/>
+      </div>
+      
+      <!-- Regular Image 3 -->
+      <div class="relative overflow-hidden border-8 border-white shadow-2xl hover:scale-105 transition-transform duration-300">
+        <img src="images/service3.png" alt="Floral Portrait" class="w-full h-full object-cover"/>
+      </div>
+      
+      <!-- Regular Image 4 -->
+      <div class="relative overflow-hidden border-8 border-white shadow-2xl hover:scale-105 transition-transform duration-300">
+        <img src="images/service4.png" alt="Abstract Portrait" class="w-full h-full object-cover"/>
+      </div>
+      
+      <!-- Tall Image 5 - spans 2 rows -->
+      <div class="row-span-2 relative overflow-hidden border-8 border-white shadow-2xl hover:scale-105 transition-transform duration-300">
+        <img src="images/service5.png" alt="Feather Sculpture" class="w-full h-full object-cover"/>
+      </div>
+      
+      <!-- Regular Image 6 -->
+      <div class="relative overflow-hidden border-8 border-white shadow-2xl hover:scale-105 transition-transform duration-300">
+        <img src="images/service6.png" alt="Sunset Boat" class="w-full h-full object-cover"/>
+      </div>
+      
+      <!-- Regular Image 7 -->
+      <div class="relative overflow-hidden border-8 border-white shadow-2xl hover:scale-105 transition-transform duration-300">
+        <img src="images/service7.png" alt="Woman Close-up Portrait" class="w-full h-full object-cover"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-20 px-5 bg-neutral-900">
+  <div class="max-w-xl mx-auto">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-bold uppercase mb-2 tracking-wider">Get In Touch</h2>
+      <p class="text-base font-semibold text-gray-100">Let's discuss your project and bring your vision to life</p>
+    </div>
+    <form action="#" onsubmit="return handleSubmit(event)" class="grid gap-5">
+      <input type="text" name="name" id="name" placeholder="Name" required class="w-full px-5 py-3 rounded bg-neutral-800 border-0 focus:ring-2 focus:ring-red-500 text-white"/>
+      <input type="text" name="subject" id="subject" placeholder="Subject" required class="w-full px-5 py-3 rounded bg-neutral-800 border-0 focus:ring-2 focus:ring-red-500 text-white"/>
+      <textarea name="message" id="message" rows="5" placeholder="Message" required class="w-full px-5 py-3 rounded bg-neutral-800 border-0 focus:ring-2 focus:ring-red-500 text-white"></textarea>
+      <button type="submit" class="bg-red-600 text-white py-3 rounded font-bold hover:bg-red-500 transition">SEND MESSAGE</button>
+    </form>
+  </div>
+</section>
+
+<script>
+  function handleSubmit(event) {
+    event.preventDefault();
     const name = document.getElementById('name').value;
     const subject = document.getElementById('subject').value;
     const message = document.getElementById('message').value;
-    
-    // Create WhatsApp message
-    const whatsappMessage = `*New Inquiry from Website*%0A%0A` +
-                           `*Name:* ${encodeURIComponent(name)}%0A` +
-                           `*Subject:* ${encodeURIComponent(subject)}%0A` +
-                           `*Message:* ${encodeURIComponent(message)}`;
-    
-    // Your WhatsApp number (with country code, no + or spaces)
     const phoneNumber = '918088249999';
-    
-    // Create WhatsApp URL
-    const whatsappURL = `https://wa.me/${phoneNumber}?text=${whatsappMessage}`;
-    
-    // Open WhatsApp in new tab
+    const whatsappURL =
+      'https://wa.me/' + phoneNumber +
+      '?text=' + encodeURIComponent(`New Inquiry from Website\n\nName: ${name}\nSubject: ${subject}\nMessage: ${message}`);
     window.open(whatsappURL, '_blank');
-    
-    // Optional: Clear form after submission
-    document.getElementById('name').value = '';
-    document.getElementById('subject').value = '';
-    document.getElementById('message').value = '';
-    
-    // Optional: Show confirmation message
-    alert('Redirecting to WhatsApp...');
-    
     return false;
-}
-
-
+  }
 </script>
+
 </body>
 </html>
-
-        
