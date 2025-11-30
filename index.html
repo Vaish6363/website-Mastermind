@@ -111,8 +111,11 @@
 </aside>
 
 
+<!-- Fixed Background Wrapper -->
+<div class="fixed inset-0 bg-cover bg-center bg-fixed -z-10" style="background-image:url('images/mastermind-bg.jpeg');"></div>
+
 <!-- Hero Section -->
-<section id="home" class="flex flex-col items-center justify-center min-h-screen pt-28 pb-14 px-4 bg-cover bg-center relative" style="background-image:url('images/mastermind-bg.jpg');">
+<section id="home" class="flex flex-col items-center justify-center min-h-screen pt-28 pb-14 px-4 relative">
   <img src="images/222.png" alt="Main Logo" class="h-72 mb-4 rounded shadow-xl"/>
   <div class="text-center">
     <div class="text-md font-semibold tracking-wide text-gray-200 mb-2">Sculpture works</div>
@@ -123,6 +126,26 @@
     </div>
   </div>
   <div class="absolute bottom-5 left-1/2 -translate-x-1/2 text-gray-300 animate-bounce text-2xl">&#8595;</div>
+</section>
+
+<!-- Gallery Section - Add semi-transparent overlay -->
+<section id="gallery" class="py-20 px-5 bg-black/85 backdrop-blur-sm overflow-hidden relative">
+  <!-- existing gallery content -->
+</section>
+
+<!-- About Section - Add semi-transparent overlay -->
+<section id="about" class="py-20 px-5 bg-black/85 backdrop-blur-sm relative">
+  <!-- existing about content -->
+</section>
+
+<!-- Services Section - Add semi-transparent overlay -->
+<section id="services" class="py-20 px-5 bg-black/85 backdrop-blur-sm relative">
+  <!-- existing services content -->
+</section>
+
+<!-- Contact Section - Solid background (no transparency) -->
+<section id="contact" class="py-20 px-5 bg-neutral-900 relative z-10">
+  <!-- existing contact form -->
 </section>
 <!-- Gallery Section -->
 <section id="gallery" class="py-20 px-5 bg-black bg-opacity-90 overflow-hidden">
@@ -315,8 +338,106 @@
     </div>
   </div>
 </div>
+<style>
+  /* ULTIMATE DARK & THICK SHADOWS - Maximum intensity */
+  
+  /* Logo - Ultra thick black shadow */
+  #home img {
+    filter: 
+      drop-shadow(0 0 10px rgba(0,0,0,1))
+      drop-shadow(0 0 20px rgba(0,0,0,1))
+      drop-shadow(0 5px 15px rgba(0,0,0,1)) 
+      drop-shadow(0 10px 25px rgba(0,0,0,1))
+      drop-shadow(0 20px 40px rgba(0,0,0,1))
+      drop-shadow(0 30px 60px rgba(0,0,0,1))
+      drop-shadow(0 40px 80px rgba(0,0,0,1));
+    -webkit-filter: 
+      drop-shadow(0 0 10px #000)
+      drop-shadow(0 0 20px #000)
+      drop-shadow(0 10px 30px #000)
+      drop-shadow(0 30px 60px #000);
+  }
+  
+  /* Main Heading - Ultra thick text shadow */
+  #home h1 {
+    text-shadow: 
+      /* Core thick shadow */
+      -2px -2px 0 #000,
+      2px -2px 0 #000,
+      -2px 2px 0 #000,
+      2px 2px 0 #000,
+      -4px -4px 0 #000,
+      4px -4px 0 #000,
+      -4px 4px 0 #000,
+      4px 4px 0 #000,
+      /* Blur layers */
+      0 0 5px #000,
+      0 0 10px #000,
+      0 0 15px #000,
+      0 2px 5px #000,
+      0 4px 10px #000,
+      0 8px 20px #000,
+      0 12px 30px #000,
+      0 16px 40px #000,
+      0 20px 50px #000,
+      0 30px 70px rgba(0,0,0,0.95),
+      0 40px 90px rgba(0,0,0,0.9);
+  }
+  
+  /* Subtitle - Thick shadow */
+  #home .text-md {
+    text-shadow: 
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+      1px 1px 0 #000,
+      -2px -2px 0 #000,
+      2px -2px 0 #000,
+      -2px 2px 0 #000,
+      2px 2px 0 #000,
+      0 0 8px #000,
+      0 2px 6px #000,
+      0 4px 12px #000,
+      0 6px 20px #000,
+      0 10px 30px rgba(0,0,0,0.95);
+  }
+  
+  /* Arrow - Thick shadow */
+  #home .animate-bounce {
+    text-shadow: 
+      -2px -2px 0 #000,
+      2px -2px 0 #000,
+      -2px 2px 0 #000,
+      2px 2px 0 #000,
+      0 0 10px #000,
+      0 4px 15px #000,
+      0 8px 25px #000;
+  }
+  
+  /* Buttons - Ultra thick box shadow */
+  #home a {
+    box-shadow: 
+      0 0 0 2px rgba(0,0,0,0.5),
+      0 4px 8px rgba(0,0,0,1),
+      0 8px 16px rgba(0,0,0,1),
+      0 12px 24px rgba(0,0,0,0.95),
+      0 16px 32px rgba(0,0,0,0.9),
+      0 24px 48px rgba(0,0,0,0.8);
+  }
+  
+  #home a:hover {
+    box-shadow: 
+      0 0 0 3px rgba(0,0,0,0.6),
+      0 6px 12px rgba(0,0,0,1),
+      0 12px 24px rgba(0,0,0,1),
+      0 18px 36px rgba(0,0,0,0.95),
+      0 24px 48px rgba(0,0,0,0.9),
+      0 32px 64px rgba(0,0,0,0.85);
+  }
+</style>
 
 <style>
+  
   /* Animation for left-to-right scroll */
   @keyframes slide-left {
     0% {
@@ -983,7 +1104,7 @@
 <a href="https://maps.app.goo.gl/9t4XyJq9VNit1dvb6?g_st=aw" 
    target="_blank" 
    aria-label="View Location on Google Maps"
-   class="fixed bottom-20 lg:bottom-6 right-4 lg:right-6 z-50 bg-red-600 hover:bg-red-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all transform hover:scale-110 border-2 border-white/20">
+   class="fixed bottom-20 lg:bottom-6 right-4 lg:right-6 z-50 bg-green-600 hover:bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all transform hover:scale-110 border-2 border-white/20">
   <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
     <path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/>
   </svg>
@@ -1000,7 +1121,7 @@
   /* Optional pulse animation for Maps button */
   @keyframes pulse-ring {
     0% {
-      box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+      box-shadow: 0 0 0 0 rgba(47, 195, 30, 0.7);
     }
     70% {
       box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);
